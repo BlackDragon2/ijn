@@ -1,0 +1,47 @@
+\documentclass[12pt,a4paper,oneside]{article}
+\usepackage[cp1250]{inputenc}
+\usepackage[english, polish]{babel}
+\usepackage{polski}
+\usepackage{indentfirst}
+\usepackage{float}
+\title{In¿ynieria jêzyka naturalnego \\ \textbf{Tworzenie mapy dokumentów w jêzyku
+polskim w oparciu o metody in¿ynierii jêzyka naturalnego}} 
+\author{Jacek Miiller, 179265 \and Roman Sorokowski, 179121 \and Bartosz
+Micha³ek, 179276}
+\date{\today}
+\begin{document}
+\setlength{\topmargin}{0pt}
+\setlength{\headsep }{0pt}
+\setlength{\headheight}{0pt}
+\setlength{\textheight}{900pt}
+\setlength{\oddsidemargin}{10pt}
+\setlength{\textwidth}{420pt}
+\maketitle
+
+\section*{Przegl¹d literatury oraz zapoznanie siê z niezbêdnymi podstawami 
+teoretycznymi}
+
+W dokumencie \cite{fuzzy} wprowadzono rozmyt¹ miarê podobieñstwa dokumentów, na
+bazie ujednolicania znaczeñ s³ów. Jako wejœcie algorytmu wyznaczania
+podobieñstwa pos³u¿y³y wyniki dzia³ania WordNetu. Nastêpnie zbudowano
+architekturê Self Organizing Map, w której wyznaczanie zwyciêskiego neuronu
+oparte by³o na algorytmie fuzzy C-means.
+
+W dokumencie \cite{multiLayer} opisano szczegó³owo jakie cechy by³y
+ekstrahowane z dokumentów oraz sposób ich ekstrakcji. Cechy te pos³u¿y³y do
+nauki zmodyfikowanej przez autorów struktury Self Organizing Map.
+
+W dokumencie \cite{fuzzy} zastosowano podejœcie po³¹czenia naiwnego
+klasyfikatora Bayesa z sieci¹ Self Organizing Map. S³owa z klasyfikowanych
+dokumentów stanowi¹ wektor wejœciowy do Bayesa, który wyznacza 
+prawdopodobieñstwa przynale¿noœci danego dokumentu do klasy. Prawdopodobieñstwa
+te stanowi¹ wejœcia do SOM.
+
+Dokument opisuj¹cy narzêdzie Fextor \cite{fextor}, które bêdzie pomocne. Wyniki
+dzia³ania tego programu zostan¹ wykorzystane jako ci¹gi ucz¹ce Self Organizing
+Map.
+
+\nocite{*} 
+\bibliographystyle{plain}
+\bibliography{ijn}
+\end{document}
