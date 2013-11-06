@@ -25,6 +25,7 @@ public class Bayes
 		}
 		if(params.get_runningMode()==RunningMode.CLASSIFY_ONLY)
 		{
+			learner.loadProbabilities(params);
 			printResult(classifier.classify(learner, params));
 		}		
 	}

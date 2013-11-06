@@ -89,9 +89,10 @@ public final class BayesLearner
         _attributesPerCategory=new HashMap<Pair<String, String>, Double>();
 	}
 
-	public void loadProbabilities()
+	public void loadProbabilities(BayesParams params)
     {
 		init();
+		CSVReader.open(params.get_learningFile());
     	List<String> row;    	
 		try 
 		{
@@ -119,14 +120,14 @@ public final class BayesLearner
 					pair=new Pair<String, String>(category, attribute);
 					_attributesPerCategory.put(pair, Double.parseDouble(iterator.next()));
 				}
-			}
-			
+			}			
 		}
 		catch (IOException e) 
 		{
 			System.out.println("Error reading learning set");
 			e.printStackTrace();
 		}
+		CSVReader.close();
     }
 	
 	private void learn(File file, BayesMode bayesMode, ConProbabilityMode probMode, CategoryProbabilityMode catProbMode, double param, boolean withSave)
@@ -134,8 +135,7 @@ public final class BayesLearner
 		loadExamples(file, bayesMode);
 		countPobabilities(bayesMode, probMode, catProbMode, param);
 		if(withSave)
-			save(file);
-		
+			save(file);		
 	}
     
     private void save(File dir) 
@@ -262,7 +262,7 @@ public final class BayesLearner
 
 	public double getProbability(Pair<String, String> pair) 
 	{
-		return _attributesPerCategory.get(pair);
+		return _attributesPerCategory.get(pair)==null?0.0:_attributesPerCategory.get(pair);
 	}
 
 	public double getCategoryProbability(String category) 
