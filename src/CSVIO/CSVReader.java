@@ -11,14 +11,14 @@ import org.supercsv.io.CsvListReader;
 import org.supercsv.prefs.CsvPreference;
 
 /**
- * Class for reading csv files. It behaves like it was static.
+ * Class for reading csv files.
  * @author Bartek
  *
  */
 public class CSVReader 
 {
 	//Reader for csv files.
-	private static ICsvListReader _listReader = null;
+	private ICsvListReader _listReader = null;
 	private static File _lastOpened =null;
 	private static List<String> _lastRead=null;
 	private static boolean _checked=false;
@@ -28,13 +28,13 @@ public class CSVReader
 	 * Opens csv output file stream.
 	 * @param file File to be opened.
 	 */
-	public static void open(File file)
+	public void open(File file)
 	{
 		reopen(file);
 		_count=countRows();
 	}
 	
-	private static void reopen(File file)
+	private void reopen(File file)
 	{
 		try 
 		{
@@ -53,7 +53,7 @@ public class CSVReader
 	/**
 	 * Closes stream.
 	 */
-	public static void close()
+	public void close()
 	{
 		try 
 		{
@@ -70,7 +70,7 @@ public class CSVReader
 	 * Returns number of read lines.
 	 * @return Number of read lines.
 	 */
-	public static int getLineNumber()
+	public int getLineNumber()
 	{
 		return _listReader.getLineNumber();
 	}
@@ -79,7 +79,7 @@ public class CSVReader
 	 * Returns number of read rows.
 	 * @return Number of read rows.
 	 */
-	public static int getRowNumber()
+	public int getRowNumber()
 	{
 		return _listReader.getRowNumber();
 	}
@@ -88,7 +88,7 @@ public class CSVReader
 	 * Returns number of columns.
 	 * @return Number of columns.
 	 */
-	public static int getColumnsNumber()
+	public int getColumnsNumber()
 	{
 		return _listReader.length();
 	}
@@ -98,7 +98,7 @@ public class CSVReader
 	 * @return List of String containing each column.
 	 * @throws IOException
 	 */
-	public static List<String> readRow() throws IOException
+	public List<String> readRow() throws IOException
 	{
 		List<String> result;
 		//Has next was called before read.
@@ -119,7 +119,7 @@ public class CSVReader
 	 * @param n Number of column to be read.
 	 * @return Value of n-th column.
 	 */
-	public static String getColumn(int n)
+	public String getColumn(int n)
 	{
 		return _listReader.get(n);
 	}
@@ -131,7 +131,7 @@ public class CSVReader
 	 * @throws IOException
 	 * @Warning Possibly slow as hell.
 	 */
-	public static List<String> readRow(int n) throws IOException
+	public List<String> readRow(int n) throws IOException
 	{
 		_checked=false;
 		goToRow(n);
@@ -143,7 +143,7 @@ public class CSVReader
 	 * @param n Row to be opened
 	 * @Warning Possibly slow as hell.
 	 */
-	public static void goToRow(int n)
+	public void goToRow(int n)
 	{
 		if(n<getRowNumber())
 		{
@@ -172,7 +172,7 @@ public class CSVReader
 	 * Checks if EOF was reached.
 	 * @return True if EOF was reached, false otherwise.
 	 */
-	public static boolean hasNext()
+	public boolean hasNext()
 	{
 		if(!_checked)
 		{
@@ -200,7 +200,7 @@ public class CSVReader
 	}
 	
 	//count rows
-	private static int countRows()
+	private int countRows()
 	{
 		int count=0;
 		try
@@ -221,7 +221,7 @@ public class CSVReader
 	}
 
 	//opens last used file.
-	private static void reopen() 
+	private void reopen() 
 	{
 		reopen(_lastOpened);		
 	}

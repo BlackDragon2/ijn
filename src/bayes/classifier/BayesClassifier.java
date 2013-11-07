@@ -20,13 +20,14 @@ public final class BayesClassifier
 	public double[][] classify(BayesLearner learner, BayesMode bayesMode, File file)
 	{
 		double[][] result=null;
+		CSVReader reader=new CSVReader();
 		try 
 		{
-			CSVReader.open(file);		
+			reader.open(file);		
 			result=new double[CSVReader.rowsCount()][learner.getNumberOfCategories()];
 			for(int i=0;i<result.length;i++)
 			{
-				List<String> attributes=CSVReader.readRow();
+				List<String> attributes=reader.readRow();
 				result[i]=classify(attributes, bayesMode, learner);
 			}
 		} 

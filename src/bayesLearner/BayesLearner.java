@@ -30,11 +30,12 @@ public final class BayesLearner
     private void loadExamples(File file, BayesMode bayesMode)
     {
     	init();
-    	CSVReader.open(file);
+    	CSVReader reader=new CSVReader();
+    	reader.open(file);
     	List<String> row;    	
 		try 
 		{
-			row = CSVReader.readRow();
+			row = reader.readRow();
 			for(String category : row)
 			{
 				_numberOfAttributesPerCategory.put(category, 0.0);
@@ -44,9 +45,9 @@ public final class BayesLearner
 	    	Pair<String, String> pair;
 	    	double value;
 	    	ListIterator<String> iterator;
-			while(CSVReader.hasNext())
+			while(reader.hasNext())
 			{
-				row=CSVReader.readRow();
+				row=reader.readRow();
 				iterator=row.listIterator();
 				category=iterator.next();
 				_totalExamples++;
@@ -78,7 +79,7 @@ public final class BayesLearner
 			System.out.println("Error reading learning set");
 			e.printStackTrace();
 		}
-		CSVReader.close();
+		reader.close();
     }
     
     private void init() 
@@ -92,17 +93,18 @@ public final class BayesLearner
 	public void loadProbabilities(BayesParams params)
     {
 		init();
-		CSVReader.open(params.get_learningFile());
+		CSVReader reader=new CSVReader();
+		reader.open(params.get_learningFile());
     	List<String> row;    	
 		try 
 		{
-			row = CSVReader.readRow();
+			row = reader.readRow();
 	    	ListIterator<String> iterator = row.listIterator();
 			while(iterator.hasNext())
 			{
 				_numberOfAttributesPerCategory.put(iterator.next(), Double.parseDouble(iterator.next()));
 			}
-			row = CSVReader.readRow();
+			row = reader.readRow();
 	    	iterator = row.listIterator();
 			while(iterator.hasNext())
 			{
@@ -113,7 +115,7 @@ public final class BayesLearner
 			Pair<String, String> pair;
 			for(String category : categories)
 			{
-				row = CSVReader.readRow();
+				row = reader.readRow();
 		    	iterator = row.listIterator();
 				for(String attribute : attributes)
 				{
@@ -127,7 +129,7 @@ public final class BayesLearner
 			System.out.println("Error reading learning set");
 			e.printStackTrace();
 		}
-		CSVReader.close();
+		reader.close();
     }
 	
 	private void learn(File file, BayesMode bayesMode, ConProbabilityMode probMode, CategoryProbabilityMode catProbMode, double param, boolean withSave)
@@ -140,10 +142,11 @@ public final class BayesLearner
     
     private void save(File dir) 
     {
+    	CSVWriter writer=new CSVWriter();
 		try 
 		{
 	    	File file=new File(dir.getParent(), dir.getName().replace(".", "Learned."));
-	    	CSVWriter.open(file);
+	    	writer.open(file);
 	    	
 			List<String> line=new LinkedList<String>();
 			Collection<String> categories=_numberOfAttributesPerCategory.keySet();
@@ -153,14 +156,14 @@ public final class BayesLearner
 				line.add(category);
 				line.add(_numberOfAttributesPerCategory.get(category).toString());
 			}
-			CSVWriter.writer(line);
+			writer.writer(line);
 			line.clear();
 			for(String attribute : attributes)
 			{
 				line.add(attribute);
 				line.add(_allAttributeOccurances.get(attribute).toString());
 			}
-			CSVWriter.writer(line);
+			writer.writer(line);
 			line.clear();
 			for(String category : categories)
 			{
@@ -168,7 +171,7 @@ public final class BayesLearner
 				{
 					line.add(_attributesPerCategory.get(new Pair<String, String>(category, attribute)).toString());
 				}
-				CSVWriter.writer(line);
+				writer.writer(line);
 				line.clear();
 			}
 		} 
@@ -177,7 +180,7 @@ public final class BayesLearner
 			System.out.println("Error while saving learned set");
 			e.printStackTrace();
 		}
-		CSVWriter.close();
+		writer.close();
 	}
 
 	private void countPobabilities(BayesMode bayesMode, ConProbabilityMode probMode, CategoryProbabilityMode catProbMode, double param) 

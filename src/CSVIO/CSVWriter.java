@@ -11,14 +11,14 @@ import org.supercsv.prefs.CsvPreference;
 
 public class CSVWriter 
 {
-	private static ICsvListWriter _listWriter = null;
+	private ICsvListWriter _listWriter = null;
 	private static File _lastOpened =null;
 	
 	/**
 	 * Opens csv input file stream.
 	 * @param file File to be opened.
 	 */
-	public static void open(File file)
+	public void open(File file)
 	{
 		try 
 		{
@@ -45,7 +45,7 @@ public class CSVWriter
 	/**
 	 * Closes stream.
 	 */
-	public static void close()
+	public void close()
 	{
 		try 
 		{
@@ -63,7 +63,7 @@ public class CSVWriter
 	 * @param list List of objects to be saved.
 	 * @throws IOException
 	 */
-	public static void writer(List<?> list) throws IOException
+	public void writer(List<?> list) throws IOException
 	{
 		_listWriter.write(list);
 	}
@@ -71,7 +71,7 @@ public class CSVWriter
 	/**
 	 * Opens last used file.
 	 */
-	public static void reopen() 
+	public void reopen() 
 	{
 			open(_lastOpened);		
 	}
