@@ -1,4 +1,4 @@
-package bayesLearner;
+package bayes.learner;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,17 +16,28 @@ import bayes.enums.ConProbabilityMode;
 import bayes.pair.Pair;
 import bayes.params.BayesParams;
 
+/**
+ * Class teaching Naive Bayes, singleton.
+ * @author Bartek
+ * @version 1.0
+ */
 public final class BayesLearner 
 {
+	//instance of BayesLearner
     private final static BayesLearner _instance = new BayesLearner();
     
-    private double _totalCount=0;
-    private double _totalExamples=0;
+    private double _totalCount=0;//total number of attributes
+    private double _totalExamples=0;//total number of examples
     private static HashMap<String, Double> _examplesPerCategory;
     private static HashMap<String, Double> _numberOfAttributesPerCategory;//later P(Category)
     private static HashMap<String, Double> _allAttributeOccurances;//later P(x) 
     private static HashMap<Pair<String, String>, Double> _attributesPerCategory;//later P(xi|Category)
     
+    /**
+     * Method loading training set into appropriate HashMap.
+     * @param file CSV file with training set.
+     * @param bayesMode
+     */
     private void loadExamples(File file, BayesMode bayesMode)
     {
     	init();
@@ -82,6 +93,9 @@ public final class BayesLearner
 		reader.close();
     }
     
+    /**
+     * Init HasMaps.
+     */
     private void init() 
     {
         _examplesPerCategory=new HashMap<String, Double>();
@@ -90,6 +104,10 @@ public final class BayesLearner
         _attributesPerCategory=new HashMap<Pair<String, String>, Double>();
 	}
 
+    /**
+     * Loads learnt probabilities from a file.
+     * @param params Bayes params.
+     */
 	public void loadProbabilities(BayesParams params)
     {
 		init();
@@ -132,6 +150,15 @@ public final class BayesLearner
 		reader.close();
     }
 	
+	/**
+	 * 
+	 * @param file
+	 * @param bayesMode
+	 * @param probMode
+	 * @param catProbMode
+	 * @param param
+	 * @param withSave
+	 */
 	private void learn(File file, BayesMode bayesMode, ConProbabilityMode probMode, CategoryProbabilityMode catProbMode, double param, boolean withSave)
 	{
 		loadExamples(file, bayesMode);

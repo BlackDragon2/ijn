@@ -4,12 +4,20 @@ import java.io.File;
 
 import bayes.classifier.BayesClassifier;
 import bayes.enums.RunningMode;
+import bayes.learner.BayesLearner;
 import bayes.params.BayesParams;
-import bayesLearner.BayesLearner;
 
+/**
+ * Main class for managing Naive Bayes Classifier.
+ * @author Bartek
+ * @version 1.0
+ */
 public class Bayes 
 {
-
+	/**
+	 * Method starting demanded (by params) operations. Public only for debug purpose.
+	 * @param params
+	 */
 	public static void run(BayesParams params) 
 	{
 		BayesLearner learner=BayesLearner.getLearner();
@@ -30,6 +38,10 @@ public class Bayes
 		}		
 	}
 
+	/**
+	 * Coders only! Method printing classification results for debug purpose.
+	 * @param Probabilities to be printed onto console.
+	 */
 	private static void printResult(double[][] tab) 
 	{
 		String result="";
@@ -44,6 +56,10 @@ public class Bayes
 		}		
 	}
 
+	/**
+	 * Method transforms params passed in args into valid BayesParams and then calling true run method.
+	 * @param args
+	 */
 	public static void run(String[] args) 
 	{
 		BayesParams params;

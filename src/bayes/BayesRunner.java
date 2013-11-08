@@ -8,21 +8,29 @@ import bayes.enums.ConProbabilityMode;
 import bayes.enums.RunningMode;
 import bayes.params.BayesParams;
 
+/**
+ * Running class for Bayes. Parameter should be passed inf args, unless CODE_PARAMS mode is on.
+ * @author Bartek
+ * @version 1.0
+ */
 public class BayesRunner 
 {
+	//testing flag, causing program to read params prepered in getParams(); 
 	private static final boolean CODE_PARAMS=true;
 	
 	public static void main(String[] args)
 	{	
 		if(CODE_PARAMS)
-			Bayes.run(getParams());
+			Bayes.run(getDefaultParams());
 		else
 			Bayes.run(args);
 	}
 
-
-
-	private static BayesParams getParams()
+	/**
+	 * Coders only! Set default params in this method.
+	 * @return Default params for Bayes.
+	 */
+	private static BayesParams getDefaultParams()
 	{
 		BayesParams params=new BayesParams();
 		params.set_runningMode(RunningMode.LEARN_AND_CLASSIFY);
