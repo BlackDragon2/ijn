@@ -1,5 +1,8 @@
 package bayes.learner;
 
+import io.csv.CSVReader;
+import io.csv.CSVWriter;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -8,8 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import CSVIO.CSVReader;
-import CSVIO.CSVWriter;
 import bayes.enums.BayesMode;
 import bayes.enums.CategoryProbabilityMode;
 import bayes.enums.ConProbabilityMode;
