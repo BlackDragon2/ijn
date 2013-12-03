@@ -1,26 +1,23 @@
 package som.learningSequence;
 
-import java.io.File;
 import java.io.Serializable;
-import java.util.regex.Pattern;
 
-public class LearningSequenceElement implements Serializable {
+public class LearningSequenceElement<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String _path;
+	private T object;
 	private double[] _featureVector;
 
-	public LearningSequenceElement(String path, double[] feats) {
-		_path = path;
+	public LearningSequenceElement(T object, double[] feats) {
+		this.object = object;
 		_featureVector = feats;
 	}
 
-	public String getPath() {
-		return _path;
+	public T getObject() {
+		return object;
 	}
 
 	public String getName() {
-		String[] subDirs = _path.split(Pattern.quote(File.separator));
-		return subDirs[subDirs.length - 1];
+		return object.toString();
 	}
 
 	public double[] getFeatures() {

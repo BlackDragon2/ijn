@@ -35,13 +35,13 @@ public class SelfOrganizingMap implements Serializable {
 		return inputLayer.getLength();
 	}
 
-	public LearningSequenceElement getClosestElement(double[] features, LearningSequenceElement[] elements) {
+	public <T> LearningSequenceElement<T> getClosestElement(double[] features, LearningSequenceElement<T>[] elements) {
 		if (elements == null || features == null || elements.length == 0)
 			throw new IllegalArgumentException();
 		setInput(features);
 		OutputNeuron closest = competitiveLayer.getWinnerNeuron(inputLayer.getInputVector());
 		double minDistance = Double.MAX_VALUE;
-		LearningSequenceElement bestElement = null;
+		LearningSequenceElement<T> bestElement = null;
 		for (int i = 0; i < elements.length; i++) {
 			double[] elemFeatures = elements[i].getFeatures();
 			setInput(elemFeatures);
@@ -54,7 +54,7 @@ public class SelfOrganizingMap implements Serializable {
 		return bestElement;
 	}
 
-	public LearningSequenceElement getPhysicallyClosestElement(double[] features, LearningSequenceElement[] elements) {
+	public <T> LearningSequenceElement<T> getPhysicallyClosestElement(double[] features, LearningSequenceElement<T>[] elements) {
 		if (elements == null || features == null || elements.length == 0)
 			throw new IllegalArgumentException();
 		setInput(features);
@@ -65,7 +65,7 @@ public class SelfOrganizingMap implements Serializable {
 			elementNeurons[i] = competitiveLayer.getIndexWinnerNeuron(inputLayer.getInputVector());
 		}
 		double minDistance = Double.MAX_VALUE;
-		LearningSequenceElement bestElement = null;
+		LearningSequenceElement<T> bestElement = null;
 		for (int i = 0; i < elementNeurons.length; i++) {
 			int[] elemPosition = elementNeurons[i];
 			double distance = competitiveLayer.distance(closest, elemPosition);
@@ -79,6 +79,10 @@ public class SelfOrganizingMap implements Serializable {
 
 	public double[] getOutput() {
 		return competitiveLayer.getWinnerNeuron(inputLayer.getInputVector()).getWeights();
+	}
+	
+	public int[] getOutputIndex(){
+		return competitiveLayer.getIndexWinnerNeuron(inputLayer.getInputVector());
 	}
 
 	public void learn(double maxR, double minR, double tMax, double[][] inputVectors, NeighbourhoodFunction function) {

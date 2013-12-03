@@ -61,9 +61,6 @@ public class CompetitiveLayer implements Serializable {
 				}
 			}
 		}
-		if (bestNeuron == null) {
-			System.out.println();
-		}
 		return bestNeuron;
 	}
 
