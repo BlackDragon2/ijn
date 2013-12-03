@@ -1,12 +1,13 @@
 package bayes.classifier;
 
+import io.csv.CSVReader;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 
-import CSVIO.CSVReader;
 import bayes.enums.BayesMode;
 import bayes.learner.BayesLearner;
 import bayes.pair.Pair;
