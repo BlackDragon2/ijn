@@ -44,4 +44,12 @@ public class DocumentMap {
 		// TODO Bartek, do your magic
 	}
 	
+	public int getMapWidth(){
+		return som.getWidth();
+	}
+	
+	public int getMapHeight(){
+		return som.getHeight();
+	}
+	
 }

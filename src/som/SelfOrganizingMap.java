@@ -102,4 +102,12 @@ public class SelfOrganizingMap implements Serializable {
 	public String toString() {
 		return competitiveLayer + "\r\n" + inputLayer;
 	}
+	
+	public int getWidth(){
+		return competitiveLayer.getSize().width;
+	}
+	
+	public int getHeight(){
+		return competitiveLayer.getSize().height;
+	}
 }
