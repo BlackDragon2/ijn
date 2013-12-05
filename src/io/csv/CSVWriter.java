@@ -63,7 +63,7 @@ public class CSVWriter
 	 * @param list List of objects to be saved.
 	 * @throws IOException
 	 */
-	public void writer(List<?> list) throws IOException
+	public void write(List<?> list) throws IOException
 	{
 		_listWriter.write(list);
 	}

@@ -184,14 +184,14 @@ public final class BayesLearner
 				line.add(category);
 				line.add(_numberOfAttributesPerCategory.get(category).toString());
 			}
-			writer.writer(line);
+			writer.write(line);
 			line.clear();
 			for(String attribute : attributes)
 			{
 				line.add(attribute);
 				line.add(_allAttributeOccurances.get(attribute).toString());
 			}
-			writer.writer(line);
+			writer.write(line);
 			line.clear();
 			for(String category : categories)
 			{
@@ -199,7 +199,7 @@ public final class BayesLearner
 				{
 					line.add(_attributesPerCategory.get(new Pair<String, String>(category, attribute)).toString());
 				}
-				writer.writer(line);
+				writer.write(line);
 				line.clear();
 			}
 		} 
