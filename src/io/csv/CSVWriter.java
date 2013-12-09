@@ -38,8 +38,16 @@ public class CSVWriter
 		{
 			System.out.println("Cannot create or open file");
 			e.printStackTrace();
-		}
-		
+		}		
+	}
+	
+	/**
+	 * Opens csv input file stream.
+	 * @param String Path to the file to be opened.
+	 */
+	public void open(String file)
+	{
+		open(new File(file));
 	}
 	
 	/**

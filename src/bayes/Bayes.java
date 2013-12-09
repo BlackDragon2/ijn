@@ -18,14 +18,16 @@ public class Bayes
 	 * Method starting demanded (by params) operations. Public only for debug purpose.
 	 * @param params
 	 */
-	public static void run(BayesParams params) 
+	public static double[][] run(BayesParams params) 
 	{
+		double[][] result = null;
 		BayesLearner learner=BayesLearner.getLearner();
 		BayesClassifier classifier=BayesClassifier.getClassifier();
 		if(params.get_runningMode()==RunningMode.LEARN_AND_CLASSIFY)
 		{
 			learner.learn(params);
-			printResult(classifier.classify(learner, params));
+			result=classifier.classify(learner, params);
+			//printResult(result);
 		}
 		if(params.get_runningMode()==RunningMode.LEARN_ONLY)
 		{
@@ -34,8 +36,10 @@ public class Bayes
 		if(params.get_runningMode()==RunningMode.CLASSIFY_ONLY)
 		{
 			learner.loadProbabilities(params);
-			printResult(classifier.classify(learner, params));
-		}		
+			result=classifier.classify(learner, params);
+			//printResult(result);
+		}
+		return result;
 	}
 
 	/**
@@ -60,7 +64,7 @@ public class Bayes
 	 * Method transforms params passed in args into valid BayesParams and then calling true run method.
 	 * @param args
 	 */
-	public static void run(String[] args) 
+	public static double[][] run(String[] args) 
 	{
 		BayesParams params;
 		switch(args.length)
@@ -81,7 +85,7 @@ public class Bayes
 			break;
 			default: params=new BayesParams(args);
 		}
-		run(params);
+		return run(params);
 	}
 	
 

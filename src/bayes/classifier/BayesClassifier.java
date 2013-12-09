@@ -126,5 +126,9 @@ public final class BayesClassifier
 	public double[][] classify(BayesLearner learner, BayesParams params) 
 	{
 		return classify(learner, params.get_bayesMode(), params.get_observations());
-	}	
+	}
+	
+	private BayesClassifier()
+	{
+	}
 }

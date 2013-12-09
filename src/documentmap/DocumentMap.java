@@ -1,16 +1,21 @@
 package documentmap;
 
+import io.csv.CSVReader;
+import io.csv.CSVWriter;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import som.SelfOrganizingMap;
 import som.neighbourhood.GaussNeighbourhood;
-import bayes.classifier.BayesClassifier;
+import bayes.Bayes;
 import documentmap.document.Document;
 
 public class DocumentMap {
 	private SelfOrganizingMap som;
-	private BayesClassifier classifier = new BayesClassifier();
 	private final double maxR = 100000; //TODO
 	private final double minR = 100; //TODO
 	private final double tMax = 10000000; //TODO
@@ -19,14 +24,21 @@ public class DocumentMap {
 		som = new SelfOrganizingMap(inputLength, mapHeight, mapWidth);
 	}
 	
-	public void createMap(List<Document> documents){
-		learnBayesClassifier();
-		double[][] probabilities = classifyDocuments(documents);
+	public void createMap(String[] args, List<Document> documents, List<Document> learningDocs)
+	{
+		if(learningDocs!=null)
+			createBayesFile(args[1], learningDocs, true);
+		createBayesFile(args.length==8?args[7]:args[6], documents, false);
+		double[][] probabilities = classifyDocuments(args);
 		som.learn(maxR, minR, tMax, probabilities, new GaussNeighbourhood());
 	}
-	
-	public List<int[]> mapDocuments(List<Document> documents){
-		double[][] probabilities = classifyDocuments(documents);
+
+	public List<int[]> mapDocuments(String[] args, List<Document> documents, List<Document> learningDocs)
+	{
+		if(learningDocs!=null)
+			createBayesFile(args[1], learningDocs, true);
+		createBayesFile(args.length==8?args[7]:args[6], documents, false);
+		double[][] probabilities = classifyDocuments(args);
 		List<int[]> result = new ArrayList<>();
 		for(int i =0; i < probabilities.length; i++){
 			som.setInput(probabilities[i]);
@@ -35,13 +47,9 @@ public class DocumentMap {
 		return result;
 	}
 
-	private double[][] classifyDocuments(List<Document> documents) {
-		// TODO Bartek, do your magic
-		return null;
-	}
-
-	private void learnBayesClassifier() {
-		// TODO Bartek, do your magic
+	private double[][] classifyDocuments(String[] args) 
+	{
+		return Bayes.run(args);
 	}
 	
 	public int getMapWidth(){
@@ -52,4 +60,42 @@ public class DocumentMap {
 		return som.getHeight();
 	}
 	
+	private void createBayesFile(String file, List<Document> documents, boolean withClasses)
+	{
+		try
+		{
+			CSVWriter writer=new CSVWriter();
+			CSVReader reader=new CSVReader();
+			writer.open(file);
+			List<String> list=new LinkedList<String>();
+			if(withClasses)
+			{
+				setClasses(list);
+				writer.write(list);
+				list.clear();
+			}
+			for(Document d: documents)
+			{
+				reader.open(new File(d.getXmlFile().getAbsolutePath(),d.getXmlFile().getName().replace("xml", "csv")));
+				while(reader.hasNext())
+					list.addAll(reader.readRow());
+				writer.write(list);
+				list.clear();
+				reader.close();
+			}
+			writer.close();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	private void setClasses(List<String> list) 
+	{
+		list.add("Blogs");
+		//...
+		//TODO
+		
+	}	
 }

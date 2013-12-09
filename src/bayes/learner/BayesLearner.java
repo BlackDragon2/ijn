@@ -305,4 +305,8 @@ public final class BayesLearner
 	{
 		learn(params.get_learningFile(), params.get_bayesMode(), params.get_probMode(), params.get_catProbMode(), params.get_probParam(), params.is_withSave());
 	}
+	
+	private BayesLearner()
+	{
+	}
 }
