@@ -10,12 +10,12 @@ public class Document {
 	private String title;
 	private String author;
 	private File xmlFile;
-	
-	public Document(String t, String au, String file){
+
+	public Document(String t, String au, String file) {
 		this(t, au, new File(file));
 	}
-	
-	public Document(String title, String author, File file){
+
+	public Document(String title, String author, File file) {
 		this.title = title;
 		this.author = author;
 		xmlFile = file;
@@ -44,10 +44,8 @@ public class Document {
 	public void setXmlFile(File xmlFile) {
 		this.xmlFile = xmlFile;
 	}
-	
-	public List<String> getXml() throws IOException{
+
+	public List<String> getXml() throws IOException {
 		return Files.readAllLines(xmlFile.toPath(), Charset.defaultCharset());
 	}
-	
-	
 }

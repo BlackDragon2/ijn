@@ -1,12 +1,13 @@
 package ui;
 
 import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.Component;
 
-import javax.swing.JPanel;
+import javax.swing.JLayeredPane;
 
+import ui.graph.GraphNode;
+import ui.graph.GraphNodePositionTransformer;
+import ui.graph.Mouse;
 import documentmap.DocumentMap;
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;
 import edu.uci.ics.jung.graph.Graph;
@@ -14,7 +15,7 @@ import edu.uci.ics.jung.graph.SparseGraph;
 import edu.uci.ics.jung.visualization.GraphZoomScrollPane;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 
-public class GraphPanel extends JPanel {
+public class GraphPanel extends JLayeredPane {
 	private static final long serialVersionUID = -3489720440432237700L;
 	private static final int NODE_GAP = 50;
 	private Graph<GraphNode, Void> graph;
@@ -28,12 +29,21 @@ public class GraphPanel extends JPanel {
 		buildGraph();
 		layout = new StaticLayout<>(graph, new GraphNodePositionTransformer());
 		vv = new VisualizationViewer<>(layout);
-		setLayout(new GridBagLayout());
 		vv.setBackground(Color.WHITE);
 		vv.setGraphMouse(new Mouse());
-		add(new GraphZoomScrollPane(vv), new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+		GraphZoomScrollPane scrollPane = new GraphZoomScrollPane(vv);
+		add(scrollPane, JLayeredPane.DEFAULT_LAYER);
 		vv.revalidate();
 		vv.repaint();
+	}
+	
+	@Override
+	public void doLayout() {
+		for(Component c : getComponents()) {
+			if(c instanceof GraphZoomScrollPane) {
+				c.setBounds(getBounds());
+			}
+		}
 	}
 
 	private void buildGraph() {
