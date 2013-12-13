@@ -22,18 +22,18 @@ import bayes.params.BayesParams;
  * @author Bartek
  * @version 1.0
  */
-public final class BayesLearner 
-{
-	//instance of BayesLearner
-    private final static BayesLearner _instance = new BayesLearner();
-    
+public class BayesLearner 
+{    
     private double _totalCount=0;//total number of attributes
     private double _totalExamples=0;//total number of examples
     private static HashMap<String, Double> _examplesPerCategory;
     private static HashMap<String, Double> _numberOfAttributesPerCategory;//later P(Category)
     private static HashMap<String, Double> _allAttributeOccurances;//later P(x) 
     private static HashMap<Pair<String, String>, Double> _attributesPerCategory;//later P(xi|Category)
-    
+	
+	public BayesLearner()
+	{
+	}
     /**
      * Method loading training set into appropriate HashMap.
      * @param file CSV file with training set.
@@ -275,11 +275,6 @@ public final class BayesLearner
         _allAttributeOccurances=null;
         _attributesPerCategory=null;
     }
-	
-	public static BayesLearner getLearner()
-	{
-		return _instance;
-	}
 
 	public int getNumberOfCategories() 
 	{
@@ -304,9 +299,5 @@ public final class BayesLearner
 	public void learn(BayesParams params) 
 	{
 		learn(params.get_learningFile(), params.get_bayesMode(), params.get_probMode(), params.get_catProbMode(), params.get_probParam(), params.is_withSave());
-	}
-	
-	private BayesLearner()
-	{
 	}
 }
