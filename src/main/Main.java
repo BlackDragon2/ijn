@@ -1,6 +1,10 @@
 package main;
 
+import io.document.DocumentLoader;
+
 import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -10,7 +14,7 @@ import documentmap.DocumentMap;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		final JFrame frame = new JFrame();
 		frame.setSize(new Dimension(800, 600));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,5 +28,7 @@ public class Main {
 				frame.setVisible(true);
 			}
 		});
+		DocumentLoader loader = new DocumentLoader(new File("D:\\Studia\\IJN\\kpwr-1.1"), new File("D:\\Studia\\IJN\\csv"));
+		System.out.println(loader.loadDocuments(10, true, false));
 	}
 }
