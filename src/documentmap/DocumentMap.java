@@ -3,7 +3,6 @@ package documentmap;
 import io.csv.CSVReader;
 import io.csv.CSVWriter;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -76,7 +75,7 @@ public class DocumentMap {
 			}
 			for(Document d: documents)
 			{
-				reader.open(new File(d.getXmlFile().getAbsolutePath(),d.getXmlFile().getName().replace("xml", "csv")));
+				reader.open(d.getCsvFile());
 				while(reader.hasNext())
 					list.addAll(reader.readRow());
 				writer.write(list);

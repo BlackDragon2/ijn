@@ -1,15 +1,11 @@
 package documentmap.document;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.util.List;
 
 public class Document {
 	private String title;
 	private String author;
-	private File xmlFile;
+	private File csvFile;
 
 	public Document(String t, String au, String file) {
 		this(t, au, new File(file));
@@ -18,7 +14,7 @@ public class Document {
 	public Document(String title, String author, File file) {
 		this.title = title;
 		this.author = author;
-		xmlFile = file;
+		csvFile = file;
 	}
 
 	public String getTitle() {
@@ -37,15 +33,12 @@ public class Document {
 		this.author = author;
 	}
 
-	public File getXmlFile() {
-		return xmlFile;
+	public File getCsvFile() {
+		return csvFile;
 	}
 
-	public void setXmlFile(File xmlFile) {
-		this.xmlFile = xmlFile;
+	public void setCsvFile(File csvFile) {
+		this.csvFile = csvFile;
 	}
 
-	public List<String> getXml() throws IOException {
-		return Files.readAllLines(xmlFile.toPath(), Charset.defaultCharset());
-	}
 }
