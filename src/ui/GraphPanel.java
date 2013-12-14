@@ -17,7 +17,7 @@ import edu.uci.ics.jung.visualization.VisualizationViewer;
 
 public class GraphPanel extends JLayeredPane {
 	private static final long serialVersionUID = -3489720440432237700L;
-	private static final int NODE_GAP = 50;
+	private static final int NODE_GAP = 25;
 	private Graph<GraphNode, Void> graph;
 	private VisualizationViewer<GraphNode, Void> vv;
 	private StaticLayout<GraphNode, Void> layout;

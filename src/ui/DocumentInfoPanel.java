@@ -1,14 +1,15 @@
 package ui;
 
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 import documentmap.document.Document;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
 
 public class DocumentInfoPanel extends JPanel {
 	private static final long serialVersionUID = 7989366696951548221L;

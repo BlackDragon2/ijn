@@ -5,8 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import org.supercsv.io.ICsvListWriter;
 import org.supercsv.io.CsvListWriter;
+import org.supercsv.io.ICsvListWriter;
 import org.supercsv.prefs.CsvPreference;
 
 public class CSVWriter 
