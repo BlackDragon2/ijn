@@ -21,8 +21,8 @@ public class Bayes
 	public static double[][] run(BayesParams params) 
 	{
 		double[][] result = null;
-		BayesLearner learner=BayesLearner.getLearner();
-		BayesClassifier classifier=BayesClassifier.getClassifier();
+		BayesLearner learner=new BayesLearner();
+		BayesClassifier classifier=new BayesClassifier();
 		if(params.get_runningMode()==RunningMode.LEARN_AND_CLASSIFY)
 		{
 			learner.learn(params);

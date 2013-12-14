@@ -18,13 +18,15 @@ import bayes.params.BayesParams;
  * @author Bartek
  * @version 1.0
  */
-public final class BayesClassifier 
+public class BayesClassifier 
 {
-	//instance of classifier
-	private final static BayesClassifier _instance = new BayesClassifier();
 	//const minimum probability (used in case an attribute did not occurred in category in learning sequence
 	private final static double _MIN_PROBIBILITY=0.00000001;
 	
+	
+	public BayesClassifier()
+	{
+	}
 	/**
 	 * Method classifying set of observations.
 	 * @param learner Bayes learner which was taught for current problem.
@@ -109,15 +111,6 @@ public final class BayesClassifier
 	}
 
 	/**
-	 * Gets instance of classifier.
-	 * @return Instance of classifier.
-	 */
-	public static BayesClassifier getClassifier()
-	{
-		return _instance;
-	}
-
-	/**
 	 * Method passing needed params from BayesParams to classifying method and returning its results.
 	 * @param learner Bayes learner which was taught for current problem.
 	 * @param params Bayes params.
@@ -126,9 +119,5 @@ public final class BayesClassifier
 	public double[][] classify(BayesLearner learner, BayesParams params) 
 	{
 		return classify(learner, params.get_bayesMode(), params.get_observations());
-	}
-	
-	private BayesClassifier()
-	{
 	}
 }
