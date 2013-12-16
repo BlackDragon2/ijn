@@ -125,6 +125,7 @@ public class ClarinWsdWorker {
 			status = br.readLine();
 			br.close();
 			status = parseClarinResponse(status);
+			System.out.println(status);
 		}
 		return status.equals(READY);
 	}

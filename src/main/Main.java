@@ -1,6 +1,6 @@
 package main;
 
-import io.clarin.ClarinWsdWorker;
+import io.clarin.ClarinXmlParser;
 
 public class Main {
 
@@ -21,11 +21,11 @@ public class Main {
 //		DocumentLoader loader = new DocumentLoader(new File("D:\\Studia\\IJN\\kpwr-1.1"), new File("D:\\Studia\\IJN\\csv"));
 //		System.out.println(loader.loadDocuments(10, true, false));
 		
-		ClarinWsdWorker w = new ClarinWsdWorker("C:\\Users\\XardaS\\Desktop\\kpwr");
-		w.disambiguateCorpus();
+//		ClarinWsdWorker w = new ClarinWsdWorker("C:\\Users\\XardaS\\Desktop\\kpwr");
+//		w.disambiguateCorpus();
 		
-//		ClarinXmlParser p = new ClarinXmlParser("C:\\Users\\XardaS\\Desktop\\kpwr", "C:\\Users\\XardaS\\Desktop\\csv");
-//		p.parse(true);
+		ClarinXmlParser p = new ClarinXmlParser("C:\\Users\\XardaS\\Desktop\\kpwr", "C:\\Users\\XardaS\\Desktop\\csv");
+		p.parse(false);
 //		p.saveDictionary("C:\\Users\\XardaS\\Desktop\\dick.csv");
 	}
 }

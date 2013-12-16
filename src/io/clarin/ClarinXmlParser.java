@@ -90,12 +90,14 @@ public class ClarinXmlParser {
 					if(singleOutputPath) {
 						newFileName = outputPath;
 					} else {
-						newFileName = outputPath + "\\" + file.getName();
+						String[] split = fileInDir.getAbsolutePath().split("\\\\");
+						newFileName = outputPath + "\\" + split[split.length - 2];
 					}
 					File f = new File(newFileName);
-					f.mkdir();
+					f.mkdirs();
 					String nameWithoutExtension = fileInDir.getName().split("\\.")[0];
 					f = new File(f.getAbsolutePath() + "\\" + nameWithoutExtension + ".csv");
+					f.createNewFile();
 					StringBuilder sb = new StringBuilder();
 					sb.append(file.getName()).append("\r\n");
 					for (String noun : nounHistogram.keySet()) {
