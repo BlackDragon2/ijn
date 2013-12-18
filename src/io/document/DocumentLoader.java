@@ -17,7 +17,7 @@ public class DocumentLoader {
 	private File csvFolder;
 	private static final int ALL = Integer.MAX_VALUE;
 	private static final String INI_EXTENSION = "ini";
-	private static final String CSV_EXTENSION = "csv";
+	private static final String CSV_EXTENSION = ".csv";
 	private static final String INI_SEPARATOR = "=";
 	private Random rand = new Random();
 	
@@ -143,7 +143,7 @@ public class DocumentLoader {
 				switch(split[0].trim()){
 				case "id" : 
 					d.setId(a);
-					d.setCsvFile(new File(csvFolder.getName()+File.separator+a+CSV_EXTENSION));
+					d.setCsvFile(new File(csvFolder.getAbsolutePath()+File.separator+file.getParentFile().getName()+File.separator+file.getName().replace(".ini", "")+CSV_EXTENSION));
 					break;
 				case "date" :
 					d.setDate(a);

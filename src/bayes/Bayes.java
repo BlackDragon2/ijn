@@ -27,7 +27,7 @@ public class Bayes
 		{
 			learner.learn(params);
 			result=classifier.classify(learner, params);
-			//printResult(result);
+			printResult(result);
 		}
 		if(params.get_runningMode()==RunningMode.LEARN_ONLY)
 		{
@@ -37,7 +37,7 @@ public class Bayes
 		{
 			learner.loadProbabilities(params);
 			result=classifier.classify(learner, params);
-			//printResult(result);
+			printResult(result);
 		}
 		return result;
 	}

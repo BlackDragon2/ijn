@@ -23,20 +23,23 @@ public class DocumentMap {
 		som = new SelfOrganizingMap(inputLength, mapHeight, mapWidth);
 	}
 	
-	public void createMap(String[] args, List<Document> documents, List<Document> learningDocs)
+	public void createMap(String[] args, List<Document> documents, List<Document> learningDocs, List<String> classes)
 	{
 		if(learningDocs!=null)
-			createBayesFile(args[1], learningDocs, true);
-		createBayesFile(args.length==8?args[7]:args[6], documents, false);
+			createBayesFile(args[1], learningDocs, true, classes);
+		createBayesFile(args.length==8?args[7]:args[6], documents, false, classes);
 		double[][] probabilities = classifyDocuments(args);
+		for(int i=0;i<probabilities.length;i++)
+			for(int j=0;j<probabilities[i].length;j++)
+				probabilities[i][j]=Math.exp(probabilities[i][j]);
 		som.learn(maxR, minR, tMax, probabilities, new GaussNeighbourhood());
 	}
 
 	public List<int[]> mapDocuments(String[] args, List<Document> documents, List<Document> learningDocs)
 	{
 		if(learningDocs!=null)
-			createBayesFile(args[1], learningDocs, true);
-		createBayesFile(args.length==8?args[7]:args[6], documents, false);
+			createBayesFile(args[1], learningDocs, true, null);
+		createBayesFile(args.length==8?args[7]:args[6], documents, false, null);
 		double[][] probabilities = classifyDocuments(args);
 		List<int[]> result = new ArrayList<>();
 		for(int i =0; i < probabilities.length; i++){
@@ -59,7 +62,7 @@ public class DocumentMap {
 		return som.getHeight();
 	}
 	
-	private void createBayesFile(String file, List<Document> documents, boolean withClasses)
+	private void createBayesFile(String file, List<Document> documents, boolean withClasses, List<String> classes)
 	{
 		try
 		{
@@ -68,14 +71,12 @@ public class DocumentMap {
 			writer.open(file);
 			List<String> list=new LinkedList<String>();
 			if(withClasses)
-			{
-				setClasses(list);
-				writer.write(list);
-				list.clear();
-			}
+				writer.write(classes);
 			for(Document d: documents)
 			{
 				reader.open(d.getCsvFile());
+				if(!withClasses)
+					reader.readRow();
 				while(reader.hasNext())
 					list.addAll(reader.readRow());
 				writer.write(list);
@@ -89,12 +90,4 @@ public class DocumentMap {
 			e.printStackTrace();
 		}
 	}
-
-	private void setClasses(List<String> list) 
-	{
-		list.add("Blogs");
-		//...
-		//TODO
-		
-	}	
 }
