@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import bayes.params.BayesParams;
 import documentmap.DocumentMap;
 import documentmap.document.Document;
 
@@ -56,6 +57,7 @@ public class Main {
 		args.add("BY_WORD");
 		args.add("SIMPLE_SMOOTHING");
 		args.add(DIR+"\\test.csv");
+		BayesParams params=new BayesParams(args.toArray(new String[args.size()]));
 		DocumentLoader loader=new DocumentLoader(new File(KPWR), new File(CSV));
 		List<String> categories=loader.getCategoryList();
 		List<Document> learning=new LinkedList<Document>();
@@ -67,14 +69,14 @@ public class Main {
 			test.addAll(loader.loadDocuments(cat, 5, true));
 			test.addAll(loader.loadDocuments(cat, 10, true));
 		}
-		map.createMap(args.toArray(new String[args.size()]), test, learning, categories);
+		map.createMap(params, test, learning, categories);
 		ObjectIOManager.save(map, new File("temp.map"));
-		map.createMap(args.toArray(new String[args.size()]), test, learning, categories);
 		args.clear();
 		args.add("CLASSIFY_ONLY");
 		args.add(DIR+"\\learnLEARNED.csv");
 		args.add("MULTINOMINAL");
 		args.add(DIR+"\\test2.csv");
-		map.mapDocuments(args.toArray(new String[args.size()]), test2, null);
+		params=new BayesParams(args.toArray(new String[args.size()]));
+		map.mapDocuments(params, test2, null);
 	}
 }

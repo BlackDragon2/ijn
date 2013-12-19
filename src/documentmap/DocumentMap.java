@@ -3,6 +3,7 @@ package documentmap;
 import io.csv.CSVReader;
 import io.csv.CSVWriter;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import som.SelfOrganizingMap;
 import som.learningSequence.LearningSequenceElement;
 import som.neighbourhood.GaussNeighbourhood;
 import bayes.Bayes;
+import bayes.params.BayesParams;
 import documentmap.document.Document;
 
 public class DocumentMap implements Serializable{
@@ -27,12 +29,12 @@ public class DocumentMap implements Serializable{
 		som = new SelfOrganizingMap(inputLength, mapHeight, mapWidth);
 	}
 	
-	public void createMap(String[] args, List<Document> documents, List<Document> learningDocs, List<String> classes)
+	public void createMap(BayesParams params, List<Document> documents, List<Document> learningDocs, List<String> classes)
 	{
 		if(learningDocs!=null)
-			createBayesFile(args[1], learningDocs, true, classes);
-		createBayesFile(args.length==8?args[7]:args[6], documents, false, classes);
-		double[][] probabilities = classifyDocuments(args);
+			createBayesFile(params.get_learningFile(), learningDocs, true, classes);
+		createBayesFile(params.get_observations(), documents, false, classes);
+		double[][] probabilities = classifyDocuments(params);
 		for(int i=0;i<probabilities.length;i++)
 			for(int j=0;j<probabilities[i].length;j++)
 				probabilities[i][j]=Math.exp(probabilities[i][j]);
@@ -40,12 +42,12 @@ public class DocumentMap implements Serializable{
 		som.learn(maxR, minR, tMax, probabilities, new GaussNeighbourhood());
 	}
 
-	public List<int[]> mapDocuments(String[] args, List<Document> documents, List<Document> learningDocs)
+	public List<int[]> mapDocuments(BayesParams params, List<Document> documents, List<Document> learningDocs)
 	{
 		if(learningDocs!=null)
-			createBayesFile(args[1], learningDocs, true, null);
-		createBayesFile(args.length==8?args[7]:args[6], documents, false, null);
-		double[][] probabilities = classifyDocuments(args);
+			createBayesFile(params.get_learningFile(), learningDocs, true, null);
+		createBayesFile(params.get_observations(), documents, false, null);
+		double[][] probabilities = classifyDocuments(params);
 		List<int[]> result = new ArrayList<>();
 		for(int i =0; i < probabilities.length; i++){
 			som.setInput(probabilities[i]);
@@ -63,9 +65,9 @@ public class DocumentMap implements Serializable{
 		return elements;
 	}
 
-	private double[][] classifyDocuments(String[] args) 
+	private double[][] classifyDocuments(BayesParams params) 
 	{
-		return Bayes.run(args);
+		return Bayes.run(params);
 	}
 	
 	public int getMapWidth(){
@@ -92,7 +94,7 @@ public class DocumentMap implements Serializable{
 		return closestDoc.getObject();
 	}
 	
-	private void createBayesFile(String file, List<Document> documents, boolean withClasses, List<String> classes)
+	private void createBayesFile(File file, List<Document> documents, boolean withClasses, List<String> classes)
 	{
 		try
 		{
