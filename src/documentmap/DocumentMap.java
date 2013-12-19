@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import som.SelfOrganizingMap;
+import som.learningSequence.LearningSequenceElement;
 import som.neighbourhood.GaussNeighbourhood;
 import bayes.Bayes;
 import documentmap.document.Document;
@@ -20,6 +21,7 @@ public class DocumentMap implements Serializable{
 	private final double maxR = 0.9; //TODO
 	private final double minR = 0.02; //TODO
 	private final double tMax = 100000; //TODO
+	private List<LearningSequenceElement<Document>> elements;
 	
 	public DocumentMap(int inputLength, int mapWidth, int mapHeight){
 		som = new SelfOrganizingMap(inputLength, mapHeight, mapWidth);
@@ -34,6 +36,7 @@ public class DocumentMap implements Serializable{
 		for(int i=0;i<probabilities.length;i++)
 			for(int j=0;j<probabilities[i].length;j++)
 				probabilities[i][j]=Math.exp(probabilities[i][j]);
+		elements = createLearningSequenceElementsList(probabilities, documents);
 		som.learn(maxR, minR, tMax, probabilities, new GaussNeighbourhood());
 	}
 
@@ -50,6 +53,15 @@ public class DocumentMap implements Serializable{
 		}
 		return result;
 	}
+	
+	private List<LearningSequenceElement<Document>> createLearningSequenceElementsList(double[][] probabilities, List<Document> documents) {
+		List<LearningSequenceElement<Document>> elements = new ArrayList<>();
+		for(int i = 0; i<documents.size(); i++) {
+			LearningSequenceElement<Document> lse = new LearningSequenceElement<Document>(documents.get(i), probabilities[i]);
+			elements.add(lse);
+		}
+		return elements;
+	}
 
 	private double[][] classifyDocuments(String[] args) 
 	{
@@ -62,6 +74,22 @@ public class DocumentMap implements Serializable{
 	
 	public int getMapHeight(){
 		return som.getHeight();
+	}
+	
+	public double[][][] getAllOutputVectors() {
+		return som.getAllOutputVectors();
+	}
+	
+	public List<LearningSequenceElement<Document>> getElements() {
+		return elements;
+	}
+	
+	public Document getClosestDocument(double[] features) {
+		@SuppressWarnings("unchecked")
+		LearningSequenceElement<Document>[] docs = new LearningSequenceElement[elements.size()];
+		elements.toArray(docs);
+		LearningSequenceElement<Document> closestDoc = som.getClosestElement(features, docs);
+		return closestDoc.getObject();
 	}
 	
 	private void createBayesFile(String file, List<Document> documents, boolean withClasses, List<String> classes)

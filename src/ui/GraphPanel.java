@@ -6,7 +6,9 @@ import java.awt.Component;
 import javax.swing.JLayeredPane;
 
 import ui.graph.GraphNode;
+import ui.graph.GraphNodeColorTransformer;
 import ui.graph.GraphNodePositionTransformer;
+import ui.graph.GraphNodeStrokeTransformer;
 import ui.graph.Mouse;
 import documentmap.DocumentMap;
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;
@@ -29,28 +31,33 @@ public class GraphPanel extends JLayeredPane {
 		buildGraph();
 		layout = new StaticLayout<>(graph, new GraphNodePositionTransformer());
 		vv = new VisualizationViewer<>(layout);
+		vv.getRenderContext().setVertexFillPaintTransformer(new GraphNodeColorTransformer());
+		vv.getRenderContext().setVertexStrokeTransformer(new GraphNodeStrokeTransformer());
 		vv.setBackground(Color.WHITE);
-		vv.setGraphMouse(new Mouse());
+		vv.setGraphMouse(new Mouse(documentMap));
 		GraphZoomScrollPane scrollPane = new GraphZoomScrollPane(vv);
 		add(scrollPane, JLayeredPane.DEFAULT_LAYER);
 		vv.revalidate();
 		vv.repaint();
 	}
-	
+
 	@Override
 	public void doLayout() {
-		for(Component c : getComponents()) {
-			if(c instanceof GraphZoomScrollPane) {
+		for (Component c : getComponents()) {
+			if (c instanceof GraphZoomScrollPane) {
 				c.setBounds(getBounds());
 			}
 		}
 	}
 
 	private void buildGraph() {
+		double[][][] outputVectors = documentMap.getAllOutputVectors();
 		for (int i = 0; i < documentMap.getMapHeight(); i++) {
 			for (int j = 0; j < documentMap.getMapWidth(); j++) {
 				GraphNode node = new GraphNode();
 				node.setPosition(i * NODE_GAP, j * NODE_GAP);
+				node.setPositionInSom(i, j);
+				node.setWeights(outputVectors[i][j]);
 				graph.addVertex(node);
 			}
 		}
