@@ -1,16 +1,15 @@
 package main;
 
+import io.document.DocumentLoader;
+import io.documentmap.ObjectIOManager;
+
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
 import documentmap.DocumentMap;
 import documentmap.document.Document;
-import io.document.DocumentLoader;
 
 
 
@@ -69,7 +68,7 @@ public class Main {
 			test.addAll(loader.loadDocuments(cat, 10, true));
 		}
 		map.createMap(args.toArray(new String[args.size()]), test, learning, categories);
-		serialize(map, new File("temp.map"));
+		ObjectIOManager.save(map, new File("temp.map"));
 		map.createMap(args.toArray(new String[args.size()]), test, learning, categories);
 		args.clear();
 		args.add("CLASSIFY_ONLY");
@@ -77,11 +76,5 @@ public class Main {
 		args.add("MULTINOMINAL");
 		args.add(DIR+"\\test2.csv");
 		map.mapDocuments(args.toArray(new String[args.size()]), test2, null);
-	}
-	
-	private static void serialize(Object o, File f) throws FileNotFoundException, IOException{
-		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
-		oos.writeObject(o);
-		oos.close();
 	}
 }

@@ -1,9 +1,11 @@
 package documentmap.document;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class Document {
+public class Document implements Serializable {
+	private static final long serialVersionUID = 1317453185701316782L;
 	private String title;
 	private String author;
 	private String id;
