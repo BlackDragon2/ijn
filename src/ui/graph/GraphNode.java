@@ -1,6 +1,8 @@
 package ui.graph;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import documentmap.document.Document;
 
@@ -8,9 +10,11 @@ public class GraphNode {
 	private int xInSom;
 	private int yInSom;
 	private Point2D position;
-	private Document document;
-	private boolean isClosest;
-	private double[] weights;
+	private List<Document> documents;
+	
+	public GraphNode() {
+		documents = new ArrayList<>();
+	}
 	
 	public void setPositionInSom(int x, int y) {
 		xInSom = x;
@@ -32,28 +36,14 @@ public class GraphNode {
 	public Point2D getPosition() {
 		return position;
 	}
-
-	public Document getDocument() {
-		return document;
-	}
-
-	public void setDocument(Document document) {
-		this.document = document;
-	}
-
-	public void setClosest(boolean isClosest) {
-		this.isClosest = isClosest;
-	}
-
-	public boolean isClosest() {
-		return isClosest;
-	}
 	
-	public void setWeights(double[] weights) {
-		this.weights = weights;
+	public List<Document> getDocuments() {
+		return documents;
 	}
-	
-	public double[] getWeights() {
-		return weights;
+
+	public void addDocument(Document document) {
+		if(!documents.contains(document)) {
+			documents.add(document);
+		}
 	}
 }

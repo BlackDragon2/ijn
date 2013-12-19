@@ -10,7 +10,7 @@ public class GraphNodeColorTransformer implements Transformer<GraphNode, Paint>{
 	@Override
 	public Paint transform(GraphNode node) {
 		Color color;
-		if(node.getDocument() == null) {
+		if(node.getDocuments().isEmpty()) {
 			color = Color.WHITE;
 		} else {
 			color = Color.RED;

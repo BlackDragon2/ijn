@@ -2,15 +2,16 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.List;
 
 import javax.swing.JLayeredPane;
 
 import ui.graph.GraphNode;
 import ui.graph.GraphNodeColorTransformer;
 import ui.graph.GraphNodePositionTransformer;
-import ui.graph.GraphNodeStrokeTransformer;
 import ui.graph.Mouse;
 import documentmap.DocumentMap;
+import documentmap.document.Document;
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseGraph;
@@ -23,18 +24,15 @@ public class GraphPanel extends JLayeredPane {
 	private Graph<GraphNode, Void> graph;
 	private VisualizationViewer<GraphNode, Void> vv;
 	private StaticLayout<GraphNode, Void> layout;
-	private DocumentMap documentMap;
 
-	public GraphPanel(DocumentMap documentMap) {
-		this.documentMap = documentMap;
+	public GraphPanel(DocumentMap documentMap, List<int[]> somCoords, List<Document> documents) {
 		graph = new SparseGraph<>();
-		buildGraph();
+		buildGraph(documentMap, somCoords, documents);
 		layout = new StaticLayout<>(graph, new GraphNodePositionTransformer());
 		vv = new VisualizationViewer<>(layout);
 		vv.getRenderContext().setVertexFillPaintTransformer(new GraphNodeColorTransformer());
-		vv.getRenderContext().setVertexStrokeTransformer(new GraphNodeStrokeTransformer());
 		vv.setBackground(Color.WHITE);
-		vv.setGraphMouse(new Mouse(documentMap));
+		vv.setGraphMouse(new Mouse());
 		GraphZoomScrollPane scrollPane = new GraphZoomScrollPane(vv);
 		add(scrollPane, JLayeredPane.DEFAULT_LAYER);
 		vv.revalidate();
@@ -50,16 +48,21 @@ public class GraphPanel extends JLayeredPane {
 		}
 	}
 
-	private void buildGraph() {
-		double[][][] outputVectors = documentMap.getAllOutputVectors();
+	private void buildGraph(DocumentMap documentMap, List<int[]> somCoords, List<Document> documents) {
+		GraphNode[][] map = new GraphNode[documentMap.getMapHeight()][documentMap.getMapWidth()];
 		for (int i = 0; i < documentMap.getMapHeight(); i++) {
 			for (int j = 0; j < documentMap.getMapWidth(); j++) {
 				GraphNode node = new GraphNode();
 				node.setPosition(i * NODE_GAP, j * NODE_GAP);
 				node.setPositionInSom(i, j);
-				node.setWeights(outputVectors[i][j]);
+				map[i][j] = node;
 				graph.addVertex(node);
 			}
+		}
+		for(int i = 0; i<somCoords.size(); i++) {
+			int[] coords = somCoords.get(i);
+			Document document = documents.get(i);
+			map[coords[0]][coords[1]].addDocument(document);
 		}
 	}
 }
