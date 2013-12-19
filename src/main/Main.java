@@ -8,11 +8,8 @@ import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-import bayes.enums.CategoryProbabilityMode;
-import bayes.enums.ConProbabilityMode;
 import documentmap.DocumentMap;
 import documentmap.document.Document;
-import io.clarin.ClarinXmlParser;
 import io.document.DocumentLoader;
 
 
@@ -73,7 +70,13 @@ public class Main {
 		}
 		map.createMap(args.toArray(new String[args.size()]), test, learning, categories);
 		serialize(map, new File("temp.map"));
-		//map.mapDocuments(args, test2, null);
+		map.createMap(args.toArray(new String[args.size()]), test, learning, categories);
+		args.clear();
+		args.add("CLASSIFY_ONLY");
+		args.add(DIR+"\\learnLEARNED.csv");
+		args.add("MULTINOMINAL");
+		args.add(DIR+"\\test2.csv");
+		map.mapDocuments(args.toArray(new String[args.size()]), test2, null);
 	}
 	
 	private static void serialize(Object o, File f) throws FileNotFoundException, IOException{
