@@ -1,7 +1,10 @@
 package main;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -48,7 +51,7 @@ public class Main {
 	
 	public static void test() throws IOException
 	{
-		DocumentMap map=new DocumentMap(1,1,1);
+		DocumentMap map=new DocumentMap(12,50,50);
 		List<String> args=new LinkedList<String>();
 		args.add("LEARN_AND_CLASSIFY");
 		args.add(DIR+"\\learn.csv");
@@ -69,6 +72,13 @@ public class Main {
 			test.addAll(loader.loadDocuments(cat, 10, true));
 		}
 		map.createMap(args.toArray(new String[args.size()]), test, learning, categories);
+		serialize(map, new File("temp.map"));
 		//map.mapDocuments(args, test2, null);
+	}
+	
+	private static void serialize(Object o, File f) throws FileNotFoundException, IOException{
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
+		oos.writeObject(o);
+		oos.close();
 	}
 }

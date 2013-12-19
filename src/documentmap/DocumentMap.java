@@ -4,6 +4,7 @@ import io.csv.CSVReader;
 import io.csv.CSVWriter;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,11 +14,12 @@ import som.neighbourhood.GaussNeighbourhood;
 import bayes.Bayes;
 import documentmap.document.Document;
 
-public class DocumentMap {
+public class DocumentMap implements Serializable{
+	private static final long serialVersionUID = -4662168227594214699L;
 	private SelfOrganizingMap som;
-	private final double maxR = 100000; //TODO
-	private final double minR = 100; //TODO
-	private final double tMax = 10000000; //TODO
+	private final double maxR = 0.9; //TODO
+	private final double minR = 0.02; //TODO
+	private final double tMax = 100000; //TODO
 	
 	public DocumentMap(int inputLength, int mapWidth, int mapHeight){
 		som = new SelfOrganizingMap(inputLength, mapHeight, mapWidth);
