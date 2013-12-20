@@ -18,6 +18,7 @@ public class ClarinXmlParser {
 	private String corpusPath;
 	private String outputPath;
 	private boolean singleOutputPath;
+	private boolean useSynset;
 	private Map<String, String> dictionary;
 
 	public ClarinXmlParser(String corpusPath, String outputPath) {
@@ -32,6 +33,7 @@ public class ClarinXmlParser {
 
 	@SuppressWarnings("unchecked")
 	public void parse(final boolean useSynset) throws Exception {
+		this.useSynset = useSynset;
 		File corpusDir = new File(corpusPath);
 		File[] cctList = corpusDir.listFiles(new FileFilter() {
 
@@ -75,9 +77,11 @@ public class ClarinXmlParser {
 									dictionary.put(noun, propSynset.getText());
 								} else {
 									noun = getNoun(lex);
+									dictionary.put(noun, "");
 								}
 							} else {
 								noun = getNoun(lex);
+								dictionary.put(noun, "");
 							}
 							int counter = 1;
 							if (nounHistogram.containsKey(noun)) {
@@ -117,7 +121,16 @@ public class ClarinXmlParser {
 		File dictionary = new File(dictionaryPath);
 		StringBuilder sb = new StringBuilder();
 		for(String key : this.dictionary.keySet()) {
-			sb.append(key).append(",").append(this.dictionary.get(key)).append("\r\n");
+			if(useSynset) {
+				sb.append(key).append(",").append(this.dictionary.get(key)).append("\r\n");
+			} else {
+				sb.append(key).append(",");
+			}
+		}
+		if(useSynset) {
+			sb.setLength(sb.length() - 2);
+		} else {
+			sb.setLength(sb.length() - 1);
 		}
 		Files.write(dictionary.toPath(), sb.toString().getBytes());
 	}

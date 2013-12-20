@@ -123,8 +123,7 @@ public class Document implements Serializable {
 	}
 	
 	public String toString(){
-		return 	super.toString() + "\r\n" + 
-				"Id: " + id + "\r\n" +
+		return "Id: " + id + "\r\n" +
 				"Author: " + author + "\r\n" + 
 				"Title: " + title + "\r\n" + 
 				"Subject: " + subject + "\r\n" +

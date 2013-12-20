@@ -50,7 +50,7 @@ public class DocumentInfoPanel extends JPanel {
 			gbc_lblNewLabel_1.gridy = gridy + 1;
 			add(lblNewLabel_1, gbc_lblNewLabel_1);
 
-			JLabel titleLabel = new JLabel(document == null ? "" : document.getTitle());
+			JLabel titleLabel = new JLabel(document == null ? "" : document.toString());
 			lblNewLabel_1.setLabelFor(titleLabel);
 			GridBagConstraints gbc_titleLabel = new GridBagConstraints();
 			gbc_titleLabel.weightx = 0.1;
