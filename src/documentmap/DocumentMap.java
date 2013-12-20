@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -83,6 +84,55 @@ public class DocumentMap implements Serializable {
 			}
 			writer.close();
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void createVectors(File destination, File dictionary , List<Document> documents)
+	{
+		try 
+		{
+			HashMap<String, Double> map=new HashMap<String, Double>();
+			CSVWriter writer = new CSVWriter();
+			CSVReader reader = new CSVReader();
+			reader.open(dictionary);
+			List<String> words=reader.readRow();
+			reader.close();
+			List<String> temp=new LinkedList<String>();
+			List<Double> vector=new LinkedList<Double>();
+			writer.open(destination);
+			for (Document d : documents) 
+			{
+				reader.open(d.getCsvFile());
+				reader.readRow();
+				while (reader.hasNext())
+				{
+					temp=reader.readRow();
+					map.put(temp.get(0), Double.parseDouble(temp.get(1)));
+				}
+				double sum=0;
+				for(String w:words)
+				{
+					if(map.get(w)!=null)
+					{
+						vector.add(map.get(w));
+						sum+=map.get(w);
+					}
+					else
+						vector.add(0.0);
+					
+				}
+				for(int i=0;i<vector.size();i++)
+				{
+					vector.set(i, vector.get(i)/sum);
+				}
+				writer.write(vector);
+				vector.clear();
+			}
+			writer.close();
+		} 
+		catch (IOException e) 
+		{
 			e.printStackTrace();
 		}
 	}
