@@ -20,8 +20,9 @@ import documentmap.document.Document;
 public class Main {
 
 	private static final String DIR = "C:/Users/XardaS/Desktop";
-	private static final String KPWR = DIR + "/kpwr_merged";
-	private static final String CSV = DIR + "/csv";
+	private static final String KPWR = "kpwr_wsd";
+	private static final String CSV = "csv_normal";
+	private static final String DICT = "dict_normal.csv";
 
 	public static void main(String[] args) throws Exception {
 		// final JFrame frame = new JFrame();
@@ -48,7 +49,17 @@ public class Main {
 		// ClarinXmlParser p = new ClarinXmlParser(KPWR, CSV);
 		// p.parse(false);
 		// p.saveDictionary("C:\\Users\\XardaS\\Desktop\\dick.csv");
-		test();
+		learnSom();
+	}
+	
+	public static void learnSom() throws IOException{
+		
+		DocumentLoader loader = new DocumentLoader(new File(KPWR), new File(CSV));
+		List<Document> documents = loader.loadDocuments();
+		double[][] vectors =  Document.vectorizeDocuments(documents, new File(DICT));
+		DocumentMap map = new DocumentMap(vectors[0].length, 50, 50);
+		map.createMap(vectors);
+		ObjectIOManager.save(map, new File("rawSynset.map"));
 	}
 
 	public static void test() throws IOException {

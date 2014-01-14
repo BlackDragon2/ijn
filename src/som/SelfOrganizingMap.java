@@ -90,12 +90,19 @@ public class SelfOrganizingMap implements Serializable {
 			throw new IllegalArgumentException();
 		double radiusRatio = minR / maxR;
 		for (int i = 0; i < tMax; i++) {
+			long t1 = System.currentTimeMillis();
 			double radius = maxR * Math.pow(radiusRatio, i / (tMax - 1));
 			inputLayer.setInput(inputVectors[i % inputVectors.length]);
 			double[] inputVector = inputLayer.getInputVector();
 			OutputNeuron[] winnerNeurons = competitiveLayer.getWinnerNeighbourhood(inputVector, radius);
 			for (OutputNeuron neuron : winnerNeurons)
 				neuron.modifyWieghts(inputVector, radius, function);
+			long t2 = System.currentTimeMillis();
+			if(i%100==1){
+				System.out.println(i+"/"+tMax);
+				System.out.println("Czas jednej iteracji: " + (t2-t1));
+				System.out.println("Pozosta³y czas: " + ((t2-t1)*(tMax-i)/1000.0/60.0/60.0) + " godzin");
+			}
 		}
 	}
 

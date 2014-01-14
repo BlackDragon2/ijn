@@ -38,6 +38,10 @@ public class DocumentMap implements Serializable {
 				probabilities[i][j] = Math.exp(probabilities[i][j]);
 		som.learn(maxR, minR, tMax, probabilities, new GaussNeighbourhood());
 	}
+	
+	public void createMap(double[][] vectors){
+		som.learn(maxR, minR, tMax, vectors, new GaussNeighbourhood());
+	}
 
 	public List<int[]> mapDocuments(BayesParams params, List<Document> documents, List<Document> learningDocs) {
 		if (learningDocs != null)

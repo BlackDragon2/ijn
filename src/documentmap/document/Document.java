@@ -1,8 +1,13 @@
 package documentmap.document;
 
+import io.csv.CSVReader;
+
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Document implements Serializable {
 	private static final long serialVersionUID = 1317453185701316782L;
@@ -129,6 +134,30 @@ public class Document implements Serializable {
 				"Subject: " + subject + "\r\n" +
 				"Subcorpus: " + subcorpus + "\r\n"+
 				"Keywors: " + Arrays.toString(keywords)+"\r\n";
+	}
+	
+	public static double[][] vectorizeDocuments(List<Document> documents, File dict) throws IOException{
+		CSVReader reader = new CSVReader();
+		reader.open(dict);
+		List<String> words = new ArrayList<>();
+		while(reader.hasNext())
+			words.add(reader.readRow().get(0));
+		reader.close();
+		double[][] result = new double[documents.size()][words.size()];
+		for(int i = 0; i < documents.size(); i++){
+			reader.open(documents.get(i).getCsvFile());
+			double sum = 0;
+			reader.readRow();
+			while(reader.hasNext()){
+				List<String> str = reader.readRow();
+				int value = Integer.parseInt(str.get(1));
+				result[i][words.indexOf(str.get(0))] += value;
+				sum += value;
+			}
+			for(int j = 0; j < result[i].length; j++)
+				result[i][j]/=sum;
+		}
+		return result;
 	}
 
 }
