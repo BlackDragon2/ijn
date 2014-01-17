@@ -38,8 +38,8 @@ public class DocumentMap implements Serializable {
 				probabilities[i][j] = Math.exp(probabilities[i][j]);
 		som.learn(maxR, minR, tMax, probabilities, new GaussNeighbourhood());
 	}
-	
-	public void createMap(double[][] vectors){
+
+	public void createMap(double[][] vectors) {
 		som.learn(maxR, minR, tMax, vectors, new GaussNeighbourhood());
 	}
 
@@ -51,6 +51,17 @@ public class DocumentMap implements Serializable {
 		List<int[]> result = new ArrayList<>();
 		for (int i = 0; i < probabilities.length; i++) {
 			som.setInput(probabilities[i]);
+			result.add(som.getOutputIndex());
+		}
+		return result;
+	}
+
+	public List<int[]> mapDocuments(List<Document> documents, File dict) throws IOException {
+		double[][] features = Document.vectorizeDocuments(documents, dict);
+		List<int[]> result = new ArrayList<>();
+		for (int i = 0; i < features.length; i++) {
+			System.out.println("feats: " + i);
+			som.setInput(features[i]);
 			result.add(som.getOutputIndex());
 		}
 		return result;
@@ -91,52 +102,42 @@ public class DocumentMap implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void createVectors(File destination, File dictionary , List<Document> documents)
-	{
-		try 
-		{
-			HashMap<String, Double> map=new HashMap<String, Double>();
+
+	public static void createVectors(File destination, File dictionary, List<Document> documents) {
+		try {
+			HashMap<String, Double> map = new HashMap<String, Double>();
 			CSVWriter writer = new CSVWriter();
 			CSVReader reader = new CSVReader();
 			reader.open(dictionary);
-			List<String> words=reader.readRow();
+			List<String> words = reader.readRow();
 			reader.close();
-			List<String> temp=new LinkedList<String>();
-			List<Double> vector=new LinkedList<Double>();
+			List<String> temp = new LinkedList<String>();
+			List<Double> vector = new LinkedList<Double>();
 			writer.open(destination);
-			for (Document d : documents) 
-			{
+			for (Document d : documents) {
 				reader.open(d.getCsvFile());
 				reader.readRow();
-				while (reader.hasNext())
-				{
-					temp=reader.readRow();
+				while (reader.hasNext()) {
+					temp = reader.readRow();
 					map.put(temp.get(0), Double.parseDouble(temp.get(1)));
 				}
-				double sum=0;
-				for(String w:words)
-				{
-					if(map.get(w)!=null)
-					{
+				double sum = 0;
+				for (String w : words) {
+					if (map.get(w) != null) {
 						vector.add(map.get(w));
-						sum+=map.get(w);
-					}
-					else
+						sum += map.get(w);
+					} else
 						vector.add(0.0);
-					
+
 				}
-				for(int i=0;i<vector.size();i++)
-				{
-					vector.set(i, vector.get(i)/sum);
+				for (int i = 0; i < vector.size(); i++) {
+					vector.set(i, vector.get(i) / sum);
 				}
 				writer.write(vector);
 				vector.clear();
 			}
 			writer.close();
-		} 
-		catch (IOException e) 
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

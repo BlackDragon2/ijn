@@ -34,7 +34,7 @@ public class ClarinWsdWorker {
 		initializeEncodingFix();
 	}
 
-	public void disambiguateCorpus() throws Exception {
+	public void disambiguateCorpus(boolean text) throws Exception {
 		File dir = new File(corpusPath);
 		File[] files = dir.listFiles();
 		for (File file : files) {
@@ -53,7 +53,7 @@ public class ClarinWsdWorker {
 					for (String line : lines) {
 						sb.append(line).append("\r\n");
 					}
-					String dis = disambiguateXml(sb.toString());
+					String dis = disambiguateXml(sb.toString(), text);
 					String newFileName = file.getAbsolutePath() + File.separator + fileInDir.getName().split("\\.")[0] + ".xml_wsd";
 					Files.write(new File(newFileName).toPath(), dis.getBytes("UTF-8"), StandardOpenOption.CREATE);
 					System.out.println(newFileName);
@@ -62,7 +62,7 @@ public class ClarinWsdWorker {
 		}
 	}
 
-	public String disambiguateXml(String content) throws Exception {
+	public String disambiguateXml(String content, boolean text) throws Exception {
 		String result = "";
 		client = HttpClientBuilder.create().build();
 		HttpPost httppost = new HttpPost(URL);
@@ -70,7 +70,7 @@ public class ClarinWsdWorker {
 		params.add(new BasicNameValuePair("action", "send"));
 		params.add(new BasicNameValuePair("content", content));
 		params.add(new BasicNameValuePair("lexicon", "1"));
-		params.add(new BasicNameValuePair("input", "ccl"));
+		params.add(new BasicNameValuePair("input", text ? "ccl" : "text"));
 		params.add(new BasicNameValuePair("output", "ccl"));
 		httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 		HttpResponse response = client.execute(httppost);

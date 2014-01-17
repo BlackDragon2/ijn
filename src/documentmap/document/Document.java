@@ -145,6 +145,7 @@ public class Document implements Serializable {
 		reader.close();
 		double[][] result = new double[documents.size()][words.size()];
 		for(int i = 0; i < documents.size(); i++){
+			System.out.println(i);
 			reader.open(documents.get(i).getCsvFile());
 			double sum = 0;
 			reader.readRow();

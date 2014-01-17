@@ -124,7 +124,7 @@ public class ClarinXmlParser {
 			if(useSynset) {
 				sb.append(key).append(",").append(this.dictionary.get(key)).append("\r\n");
 			} else {
-				sb.append(key).append(",");
+				sb.append(key).append(",").append("\r\n");
 			}
 		}
 		if(useSynset) {
