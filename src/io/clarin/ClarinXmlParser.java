@@ -56,7 +56,7 @@ public class ClarinXmlParser {
 					@Override
 					public boolean accept(File file) {
 						String fileName = file.getName();
-						return useSynset ? fileName.endsWith(".xml_wsd") : fileName.endsWith(".xml_dis");
+						return fileName.endsWith(".xml_wsd");
 					}
 				});
 				for (File fileInDir : filesInDir) {
